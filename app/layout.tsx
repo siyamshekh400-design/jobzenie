@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jobsfiesta - Find Your Dream Job",
+  title: "JobZenie - Find Your Dream Job",
   description:
-    "Connect with top employers and find your perfect job opportunity. Post jobs, discover talent, and build your career with Jobsfiesta.",
+    "Connect with top employers and find your perfect job opportunity. Post jobs, discover talent, and build your career with JobZenie.",
 };
 
 export default function RootLayout({

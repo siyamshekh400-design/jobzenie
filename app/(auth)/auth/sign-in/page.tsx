@@ -36,7 +36,7 @@ export default async function LoginPage() {
                 <div className="bg-primary text-primary-foreground rounded-lg p-3">
                   <Briefcase size={28} />
                 </div>
-                <h1 className="text-3xl font-bold">Jobsfiesta</h1>
+                <h1 className="text-3xl font-bold">JobZenie</h1>
               </div>
               <h2 className="mb-4 text-4xl font-bold">Welcome Back</h2>
               <p className="text-muted-foreground text-lg">Sign in to your account to continue your journey</p>

@@ -6,7 +6,7 @@ import Services from "@/components/home/services";
 // import { auth } from "@/lib/auth";
 
 export const metadata = {
-  title: "Jobsfiesta - Find Your Dream Job",
+  title: "JobZenie - Find Your Dream Job",
   description: "Connect with top employers and find your perfect job opportunity",
 };
 

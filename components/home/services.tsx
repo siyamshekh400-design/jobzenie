@@ -37,7 +37,7 @@ export default function Services() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="animate-fade-in mb-12 space-y-4 text-center">
           <h2 className="from-primary to-accent bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
-            Why Choose Jobsfiesta?
+            Why Choose JobZenie?
           </h2>
           <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
             We make it easy to connect talent with opportunity

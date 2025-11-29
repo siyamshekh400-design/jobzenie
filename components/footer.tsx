@@ -12,7 +12,7 @@ export default function Footer() {
               <div className="bg-primary text-primary-foreground rounded-lg p-2">
                 <Briefcase size={18} />
               </div>
-              <span>Jobsfiesta</span>
+              <span>JobZenie</span>
             </div>
             <p className="text-muted-foreground text-sm">Connecting talent with opportunity</p>
           </div>
@@ -95,7 +95,7 @@ export default function Footer() {
         </div>
 
         <div className="border-border text-muted-foreground border-t pt-8 text-center text-sm">
-          <p>&copy; 2025 Jobsfiesta. All rights reserved.</p>
+          <p>&copy; 2025 JobZenie. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -22,14 +22,14 @@ export default function HeroBanner() {
           <div className="animate-fade-in space-y-4">
             <div className="inline-block">
               <span className="bg-primary/10 border-primary/20 text-primary rounded-full border px-4 py-2 text-sm font-semibold">
-                Welcome to Jobsfiesta Platform
+                Welcome to JobZenie Platform
               </span>
             </div>
             <h1 className="from-primary via-primary to-accent bg-linear-to-r bg-clip-text text-5xl leading-tight font-bold text-balance text-transparent md:text-7xl">
               Find Your <span className="text-primary">Dream Job</span> Today
             </h1>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed text-balance md:text-xl">
-              Connect with top companies and unlock your career potential. Jobsfiesta makes job hunting simple and
+              Connect with top companies and unlock your career potential. JobZenie makes job hunting simple and
               effective.
             </p>
           </div>
