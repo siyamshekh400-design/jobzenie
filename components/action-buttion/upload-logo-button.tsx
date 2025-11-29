@@ -18,7 +18,7 @@ const UploadLogoButton = ({ accountType, loggedInUserId }: IUploadButtonProps) =
 
   return (
     <CldUploadWidget
-      uploadPreset="jobfiesta_rakibtweets"
+      uploadPreset="jobzenie_uploads"
       signatureEndpoint={`/api/signed-image`}
       options={{
         folder: "employee",
@@ -27,6 +27,11 @@ const UploadLogoButton = ({ accountType, loggedInUserId }: IUploadButtonProps) =
         multiple: false,
       }}
       onSuccess={async (result) => {
+        console.log("🚀 ~ onSuccess ~ result:", result);
+        console.log({api:process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+                    key:process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+                    name:process.env.CLOUDINARY_API_SECRET}
+                  )
         if (result.event !== "success") return;
 
         // setResource(result); // { public_id, secure_url, etc }

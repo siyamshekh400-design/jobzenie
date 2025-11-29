@@ -10,6 +10,7 @@ import { sendEmailAction } from "./actions/send-email.action";
 const MONGODB_URI = process.env.MONGODB_URI as string;
 const DATABASE_NAME = process.env.DATABASE_NAME as string;
 
+
 const client = new MongoClient(MONGODB_URI);
 const db = client.db(DATABASE_NAME);
 
