@@ -80,7 +80,6 @@ export default function SignUpForm({ accountType }: ISignUpFormProps) {
       return toast.error(error.message);
     }
     setIsPending(false);
-    toast.success("Google sign successful");
   };
 
   return (

@@ -73,7 +73,7 @@ const SignInForm = () => {
       return toast.error(error.message);
     }
     setIsPending(false);
-    toast.success("Google sign successful");
+    // toast.success("Google sign successful");
   };
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4 p-4">

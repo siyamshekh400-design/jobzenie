@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCandidateProfileByUserId } from "@/lib/actions/candidate.action";
 import { getServerSession } from "@/lib/get-session";
+import { getCompanyInitials } from "@/lib/utils";
 
 const CandidateProfilePage = async () => {
   const data = await getServerSession();
@@ -24,6 +25,7 @@ const CandidateProfilePage = async () => {
   if (!data?.session) redirect("/auth/sign-in");
   const { data: candidateData } = await getCandidateProfileByUserId(String(user?.id));
   const candidate = candidateData?.candidate;
+  const stats = candidateData?.stats;
 
   return (
     <>
@@ -35,7 +37,7 @@ const CandidateProfilePage = async () => {
           <div className="flex gap-4">
             <Avatar className="h-16 w-16 sm:h-20 sm:w-20">
               <AvatarImage src={candidate?.photo?.url || "https://github.com/shadcn.png"} alt="@shadcn" />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarFallback>{getCompanyInitials(candidate?.name)}</AvatarFallback>
             </Avatar>
 
             <div className="flex flex-col gap-4">
@@ -62,24 +64,19 @@ const CandidateProfilePage = async () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3">
           <div className="text-center">
-            <div className="text-primary text-2xl font-bold sm:text-3xl">8</div>
+            <div className="text-primary text-2xl font-bold sm:text-3xl">{stats?.totalApplications || 0}</div>
             <div className="text-muted-foreground text-xs sm:text-sm">Applications</div>
           </div>
 
           <div className="text-center">
-            <div className="text-primary text-2xl font-bold sm:text-3xl">12</div>
+            <div className="text-primary text-2xl font-bold sm:text-3xl">{stats?.savedJobsCount || 0}</div>
             <div className="text-muted-foreground text-xs sm:text-sm">Saved Jobs</div>
           </div>
 
           <div className="text-center">
-            <div className="text-primary text-2xl font-bold sm:text-3xl">2</div>
-            <div className="text-muted-foreground text-xs sm:text-sm">Interview Offers</div>
-          </div>
-
-          <div className="text-center">
-            <div className="text-primary text-2xl font-bold sm:text-3xl">95%</div>
+            <div className="text-primary text-2xl font-bold sm:text-3xl">{stats?.profileStrength || 0}</div>
             <div className="text-muted-foreground text-xs sm:text-sm">Profile Completion</div>
           </div>
         </div>

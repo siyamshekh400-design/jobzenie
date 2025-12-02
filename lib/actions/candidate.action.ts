@@ -280,7 +280,16 @@ export const updateExperienceInCandidateProfile = async (
 
 export const getCandidateProfileByUserId = async (
   userId: string
-): Promise<ActionResponse<{ candidate: ICandidateProfile }>> => {
+): Promise<
+  ActionResponse<{
+    candidate: ICandidateProfile;
+    stats: {
+      totalApplications: number;
+      savedJobsCount: number;
+      profileStrength: number;
+    };
+  }>
+> => {
   const validationResult = await action({
     authorizeRole: "candidate",
   });
@@ -297,12 +306,40 @@ export const getCandidateProfileByUserId = async (
     if (!profile) {
       throw new Error("Candidate profile not found");
     }
+    const totalApplications = await Application.countDocuments({
+      candidate: profile._id,
+    });
+
+    // 4. Saved Jobs Count
+    const savedJobsCount = profile.savedJob?.length || 0;
+
+    // 5. Profile Strength Calculation (Smart Logic)
+    let completedFields = 0;
+    const totalFields = 10;
+
+    if (profile.name) completedFields++;
+    if (profile.email) completedFields++;
+    if (profile.phone) completedFields++;
+    if (profile.photo?.url) completedFields++;
+    if (profile.bio) completedFields++;
+    if (profile.headline) completedFields++;
+    if (profile.skills?.length) completedFields++;
+    if (profile.languages?.length) completedFields++;
+    if (profile.experience?.length) completedFields++;
+    if (profile.education?.length) completedFields++;
+
+    const profileStrength = Math.round((completedFields / totalFields) * 100);
 
     // 2. Return
     return {
       success: true,
       data: {
         candidate: JSON.parse(JSON.stringify(profile)),
+        stats: {
+          profileStrength,
+          savedJobsCount,
+          totalApplications,
+        },
       },
     };
   } catch (error) {
@@ -747,7 +784,6 @@ export const getAllCandidates = cache(
         },
       };
     } catch (error) {
-      console.log("🚀 ~ getAllCandidates ~ error:", error);
       return handleError(error) as ErrorResponse;
     }
   }
@@ -782,7 +818,6 @@ export const getCandidateById = async (
       data: { candidate },
     };
   } catch (error) {
-    console.log("🚀 ~ getCandidateById ~ error:", error);
     return handleError(error) as ErrorResponse;
   }
 };
@@ -830,7 +865,6 @@ export async function addToSaveJob(candidateId: string, jobiId: string): Promise
     revalidatePath("/dashboard/candidate/saved-jobs");
     return { success: true };
   } catch (error) {
-    console.error("Error adding to savejob:", error);
     return handleError(error) as ErrorResponse;
   }
 }
@@ -874,7 +908,6 @@ export async function removeFromSavedJob(candidateId: string, jobId: string): Pr
 
     return { success: true };
   } catch (error) {
-    console.error("Error removing from saved list:", error);
     return handleError(error) as ErrorResponse;
   }
 }
@@ -911,7 +944,6 @@ export async function getSavedJobsCandidateId(candidateId: string): Promise<Acti
       },
     };
   } catch (error) {
-    console.error("Error fetching saved candidates:", error);
     return handleError(error) as ErrorResponse;
   }
 }
