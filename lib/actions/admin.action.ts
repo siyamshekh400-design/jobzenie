@@ -356,3 +356,33 @@ export async function getAdminDashboardStats(): Promise<ActionResponse<AdminDash
     return handleError(error) as ErrorResponse;
   }
 }
+
+// Todo: Admin manage applications
+// Todo: Admin: Get all pending applications for review
+export async function getAdminPendingApplications() {
+  try {
+    await dbConnect();
+
+    const applications = await Application.find({
+      "adminReview.status": "pending",
+    })
+      .populate("job", "title companyName companyLogo")
+      .populate("candidate", "name email phone resume skills")
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const total = await Application.countDocuments({
+      "adminReview.status": "pending",
+    });
+
+    return {
+      success: true,
+      data: {
+        applications: JSON.parse(JSON.stringify(applications)),
+        total,
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}

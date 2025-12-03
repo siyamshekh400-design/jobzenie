@@ -1,6 +1,5 @@
 "use client";
 
-import { Camera } from "lucide-react";
 import { CldUploadWidget } from "next-cloudinary";
 import { toast } from "sonner";
 
@@ -18,7 +17,7 @@ const UploadPDFButton = ({ accountType, loggedInUserId }: IUploadButtonProps) =>
   // console.log("🚀 ~ UploadImagButton ~ resource:", resource);
   return (
     <CldUploadWidget
-      uploadPreset="jobzenie_uploads"
+      uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET as string}
       signatureEndpoint={`/api/signed-image`}
       options={{
         folder: "resume",

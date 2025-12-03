@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, DollarSign, Users, EllipsisIcon, Eye, Trash2, Edit } from "lucide-react";
+import { MapPin, DollarSign, Users, Eye, Trash2, Edit, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 import { ActionButton } from "@/components/ui/action-button";
@@ -66,6 +66,12 @@ export default function EmployeeJobList({ job }: EmployeeJobListProps) {
               })}
               {remaining.length > 0 && <Badge>{remaining.length} +more</Badge>}
             </div>
+            {/* buttons */}
+            <div className="mt-3">
+              <Button variant={"secondary"} className="text-wrap">
+                <Link href="/dashboard/employee/jobs/new">View Applicants</Link>
+              </Button>
+            </div>
           </div>
 
           {/* Actions */}
@@ -73,7 +79,7 @@ export default function EmployeeJobList({ job }: EmployeeJobListProps) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="icon" variant="ghost" className="rounded-full shadow-none" aria-label="Open edit menu">
-                  <EllipsisIcon size={16} aria-hidden="true" />
+                  <ChevronDown size={16} aria-hidden="true" />
                 </Button>
               </DropdownMenuTrigger>
 

@@ -1,4 +1,4 @@
-import { Users, Home, LayoutDashboard, MessageCircleMore, Settings } from "lucide-react";
+import { Users, Home, LayoutDashboard, MessageCircleMore, Settings, FileStack } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -34,6 +34,11 @@ const items = [
     title: "Users",
     url: "/dashboard/admin/users",
     icon: Users,
+  },
+  {
+    title: "Applications",
+    url: "/dashboard/admin/applications",
+    icon: FileStack,
   },
   {
     title: "Message",

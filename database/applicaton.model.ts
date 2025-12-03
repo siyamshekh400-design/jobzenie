@@ -12,6 +12,11 @@ export interface IApplication extends Document {
   candidate: mongoose.Types.ObjectId; // ref: CandidateProfile
   status: ApplicationStatus;
   resumeSnapshot: string; // Stored at submission time
+  adminReview?: {
+    status?: "pending" | "approved" | "rejected";
+    comment?: string;
+    reviewedAt?: Date;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,6 +44,16 @@ const applicationSchema = new Schema<IApplication>(
       default: "submitted",
     },
 
+    adminReview: {
+      status: {
+        type: String,
+        enum: ["pending", "approved", "rejected"],
+        default: "pending",
+      },
+      comment: String,
+      reviewedAt: Date,
+    },
+
     // Important snapshot — resume used at time of applying
     resumeSnapshot: {
       type: String,
@@ -52,7 +67,8 @@ const applicationSchema = new Schema<IApplication>(
 // 3. UNIQUE INDEX (prevent duplicate applications)
 // ------------------------------
 applicationSchema.index({ job: 1, candidate: 1 }, { unique: true });
-
+applicationSchema.index({ "adminReview.status": 1 });
+applicationSchema.index({ job: 1, "adminReview.status": 1 });
 // ------------------------------
 // 4. EXPORT MODEL (Next.js-safe)
 // ------------------------------

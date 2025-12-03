@@ -5,10 +5,12 @@ import React from "react";
 import { EmployeeDashboardSidebar } from "@/components/employee/employee-sidebar";
 import ProfileMenu from "@/components/shared/profile-menu";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { User } from "@/lib/auth";
 import { getServerSession } from "@/lib/get-session";
 
 const EmployeeDashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const me = await getServerSession();
+  const user = me?.user as User;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   if (!me?.session || me.user.accountType !== "employee") {
@@ -24,13 +26,15 @@ const EmployeeDashboardLayout = async ({ children }: { children: React.ReactNode
             <div className="flex items-center justify-between gap-x-4">
               {/* <ProfileAvatar /> */}
               <ProfileMenu
-                name={me?.user?.name}
-                email={me?.user.email}
-                image={me?.user?.image as string}
+                name={user?.name}
+                email={user?.email}
+                image={user?.image as string}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                role={(me?.user as any)?.role}
+                role={(user as any)?.role}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                accountType={(me?.user as any)?.accountType}
+                accountType={(user as any)?.accountType}
+                isCandiateProfileCreated={user?.candidate ? true : false}
+                isEmployeeProfileCreated={user?.employee ? true : false}
               />
             </div>
           </div>

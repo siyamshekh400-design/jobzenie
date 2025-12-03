@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
+import { getCompanyInitials } from "@/lib/utils";
 
 interface IProfileMenuProps {
   name: string | undefined;
@@ -66,7 +67,7 @@ export default function ProfileMenu({
         <Button variant={"ghost"} className="rounded-full p-0">
           <Avatar>
             <AvatarImage src={image || "https://github.com/shadcn.png"} alt="Profile image" />
-            <AvatarFallback>{"kk"}</AvatarFallback>
+            <AvatarFallback>{getCompanyInitials(name)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

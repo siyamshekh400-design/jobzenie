@@ -7,6 +7,7 @@ import { cache } from "react";
 
 import { Employee } from "@/database/employee.model";
 import { IJob, Job } from "@/database/job.model";
+import { PaginatedSearchParams, PaginationResponse } from "@/types/action";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
@@ -238,6 +239,7 @@ export const getJobsByEmployeeId = async (
 
     const filter: FilterQuery<IJob> = {
       employer: new Types.ObjectId(employeeId),
+      "adminReview.status": "approved",
     };
 
     // Optional search
@@ -258,6 +260,7 @@ export const getJobsByEmployeeId = async (
     };
 
     const sortPriority: Record<string, 1 | -1> = {
+      "adminReview.reviewedAt": -1,
       createdAt: -1, // latest job first
     };
 
@@ -298,7 +301,6 @@ export const getJobsByEmployeeId = async (
       },
     };
   } catch (error) {
-    console.log("🚀 ~ getJobsByEmployeeId ~ error:", error);
     return handleError(error) as ErrorResponse;
   }
 };

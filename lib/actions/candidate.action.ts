@@ -327,6 +327,7 @@ export const getCandidateProfileByUserId = async (
     if (profile.languages?.length) completedFields++;
     if (profile.experience?.length) completedFields++;
     if (profile.education?.length) completedFields++;
+    if (profile.resume?.url) completedFields++;
 
     const profileStrength = Math.round((completedFields / totalFields) * 100);
 
@@ -620,7 +621,6 @@ export const candidateResumeUplaod = async (
 ): Promise<ActionResponse> => {
   try {
     await dbConnect();
-    console.log(payload);
     if (!payload?.url) {
       throw new Error("Image URL is required");
     }
@@ -1011,6 +1011,7 @@ export const getSingleCandidateStats = async (
     if (candidate.languages?.length) completedFields++;
     if (candidate.experience?.length) completedFields++;
     if (candidate.education?.length) completedFields++;
+    if (candidate.resume?.url) completedFields++;
 
     const profileStrength = Math.round((completedFields / totalFields) * 100);
 
