@@ -1,6 +1,7 @@
 "use server";
 
 import { APIError } from "better-auth";
+import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -363,9 +364,9 @@ export async function getAdminPendingApplications() {
   try {
     await dbConnect();
 
-    const applications = await Application.find({
-      "adminReview.status": "pending",
-    })
+    // const filter: FilterQuery = {"adminReview.status": "pending"};
+
+    const applications = await Application.find({})
       .populate("job", "title companyName companyLogo")
       .populate("candidate", "name email phone resume skills")
       .sort({ createdAt: -1 })
@@ -381,6 +382,84 @@ export async function getAdminPendingApplications() {
         applications: JSON.parse(JSON.stringify(applications)),
         total,
       },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+// Admin: Approve application
+export async function approveApplication(applicationId: string, comment?: string): Promise<ActionResponse> {
+  const validationResult = await action({
+    role: "admin",
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+  try {
+    await dbConnect();
+
+    await Application.findByIdAndUpdate(
+      applicationId,
+      {
+        $set: {
+          "adminReview.status": "approved",
+          "adminReview.comment": comment || "",
+          "adminReview.reviewedAt": new Date(),
+          // status: "reviewed",
+        },
+      },
+      { new: true }
+    )
+      .populate("job")
+      .populate("candidate");
+
+    revalidatePath("/dashboard/admin/applications");
+    revalidatePath("/employer/applications");
+
+    return {
+      success: true,
+      message: "Application approved successfully",
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+// Admin: Approve application
+export async function rejectApplication(applicationId: string, comment?: string): Promise<ActionResponse> {
+  const validationResult = await action({
+    role: "admin",
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+  try {
+    await dbConnect();
+
+    await Application.findByIdAndUpdate(
+      applicationId,
+      {
+        $set: {
+          "adminReview.status": "rejected",
+          "adminReview.comment": comment || "",
+          "adminReview.reviewedAt": new Date(),
+          // status: "reviewed",
+        },
+      },
+      { new: true }
+    )
+      .populate("job")
+      .populate("candidate");
+
+    revalidatePath("/dashboard/admin/applications");
+    revalidatePath("/employer/applications");
+
+    return {
+      success: true,
+      message: "Application approved successfully",
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

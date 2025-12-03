@@ -67,7 +67,7 @@ export function AdminApplicationTable<TData, TValue>({ columns, data }: DataTabl
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+                {headerGroup.headers?.map((header) => (
                   <TableHead key={header.id}>
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
@@ -77,8 +77,8 @@ export function AdminApplicationTable<TData, TValue>({ columns, data }: DataTabl
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
+            {table.getRowModel()?.rows?.length > 0 ? (
+              table.getRowModel().rows?.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
@@ -87,7 +87,7 @@ export function AdminApplicationTable<TData, TValue>({ columns, data }: DataTabl
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell colSpan={columns?.length} className="h-24 text-center">
                   No applications found.
                 </TableCell>
               </TableRow>

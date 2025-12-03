@@ -4,6 +4,6 @@ import { getAdminPendingApplications } from "@/lib/actions/admin.action";
 
 const AdminApplications = async () => {
   const { data } = await getAdminPendingApplications();
-  return <AdminApplicationTable columns={adminApplicaitonColumns} data={data?.applications} />;
+  return <AdminApplicationTable columns={adminApplicaitonColumns} data={data?.applications || []} />;
 };
 export default AdminApplications;

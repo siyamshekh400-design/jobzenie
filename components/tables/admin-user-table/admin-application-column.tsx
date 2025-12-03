@@ -1,18 +1,11 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { FileText, CheckCircle, XCircle } from "lucide-react";
+import { FileText } from "lucide-react";
+import Link from "next/link";
 
+import ReviewApplicantsButton from "@/components/action-buttion/review-applicant-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 interface ApplicationData {
   _id: string;
@@ -93,7 +86,7 @@ export const adminApplicaitonColumns: ColumnDef<ApplicationData>[] = [
     accessorKey: "resumeSnapshot",
     header: "Resume",
     cell: ({ row }) => (
-      <a
+      <Link
         href={row.original.resumeSnapshot}
         target="_blank"
         rel="noopener noreferrer"
@@ -101,8 +94,29 @@ export const adminApplicaitonColumns: ColumnDef<ApplicationData>[] = [
       >
         <FileText className="h-4 w-4" />
         View
-      </a>
+      </Link>
     ),
+  },
+  {
+    id: "admin.status",
+    header: "Status",
+    cell: ({ row }) => {
+      const currentStatus = row.original.adminReview?.status || "pending";
+      const statusStyles: Record<string, string> = {
+        pending: "bg-yellow-100 text-yellow-800 border-yellow-300",
+        approved: "bg-green-100 text-green-800 border-green-300",
+        rejected: "bg-red-100 text-red-800 border-red-300",
+      };
+      return (
+        <span
+          className={`inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium capitalize ${
+            statusStyles[currentStatus]
+          }`}
+        >
+          {currentStatus}
+        </span>
+      );
+    },
   },
   {
     id: "actions",
@@ -110,48 +124,7 @@ export const adminApplicaitonColumns: ColumnDef<ApplicationData>[] = [
     cell: ({ row }) => {
       const app = row.original;
 
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="sm">
-              Review
-            </Button>
-          </DialogTrigger>
-
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Review Application</DialogTitle>
-              <DialogDescription>
-                {app.candidate.name} - {app.job.title}
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="space-y-4 py-4">
-              <div>
-                <label className="text-sm font-medium">Add Comment</label>
-                <textarea
-                  //   value={comment}
-                  //   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Add your review comment..."
-                  className="mt-2 w-full rounded-md border p-2 text-sm"
-                  rows={4}
-                />
-              </div>
-
-              <div className="flex justify-end gap-3">
-                <Button variant="destructive" className="gap-2">
-                  <XCircle className="h-4 w-4" />
-                  Reject
-                </Button>
-                <Button className="gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Approve
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
+      return <ReviewApplicantsButton app={app} />;
     },
   },
 ];
