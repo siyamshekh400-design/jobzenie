@@ -76,7 +76,7 @@ const ReviewApplicantsButton = ({ app }: IButtonProps) => {
       setLoadingAction(null);
       setSelectedAppId(null);
     } else {
-      toast.error(error?.message || "Error:Approving application");
+      toast.error(error?.message || "Error:Rejecting application");
       setLoadingAction(null);
       setSelectedAppId(null);
     }

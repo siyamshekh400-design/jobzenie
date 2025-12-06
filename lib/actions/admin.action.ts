@@ -407,7 +407,7 @@ export async function approveApplication(applicationId: string, comment?: string
           "adminReview.status": "approved",
           "adminReview.comment": comment || "",
           "adminReview.reviewedAt": new Date(),
-          // status: "reviewed",
+          status: "reviewed",
         },
       },
       { new: true }
@@ -446,7 +446,7 @@ export async function rejectApplication(applicationId: string, comment?: string)
           "adminReview.status": "rejected",
           "adminReview.comment": comment || "",
           "adminReview.reviewedAt": new Date(),
-          // status: "reviewed",
+          status: "rejected",
         },
       },
       { new: true }
@@ -459,7 +459,7 @@ export async function rejectApplication(applicationId: string, comment?: string)
 
     return {
       success: true,
-      message: "Application approved successfully",
+      message: "Application rejected successfully",
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

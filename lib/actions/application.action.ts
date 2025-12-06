@@ -70,7 +70,7 @@ export async function getAppliedJobs(candidateId: string): Promise<ActionRespons
       .populate({
         path: "job",
         model: Job,
-        select: "title companyName location salary jobType skillsRequired _id",
+        select: "title companyName location salary jobType skillsRequired _id adminReview",
       })
       .sort({ createdAt: -1 });
 

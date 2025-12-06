@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export type Application = {
   id?: string;
@@ -11,6 +12,11 @@ export type Application = {
   title: string;
   companyName: string;
   status: string;
+  adminReview?: {
+    status?: "pending" | "approved" | "rejected";
+    comment?: string;
+    reviewedAt?: Date;
+  };
   appliedDate: string;
   location: string;
   salary: string;
@@ -48,6 +54,8 @@ export const appliedColumns: ColumnDef<Application>[] = [
     header: "Status",
     cell: ({ row }) => {
       const status = row.original.status;
+      const adminReview = row?.original?.adminReview;
+      console.log("🚀 ~ adminReview:", adminReview);
 
       const statusStyles: Record<Application["status"], string> = {
         submitted: "bg-blue-500/20 text-blue-600",
@@ -58,7 +66,16 @@ export const appliedColumns: ColumnDef<Application>[] = [
         withdrawn: "bg-gray-500/20 text-gray-600",
       };
 
-      return <Badge className={statusStyles[status]}>{status.charAt(0).toUpperCase() + status.slice(1)}</Badge>;
+      return (
+        <Tooltip>
+          <TooltipTrigger>
+            <Badge className={statusStyles[status]}>{status.charAt(0).toUpperCase() + status.slice(1)}</Badge>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{adminReview?.status ? adminReview?.comment : status}</p>
+          </TooltipContent>
+        </Tooltip>
+      );
     },
   },
 ];

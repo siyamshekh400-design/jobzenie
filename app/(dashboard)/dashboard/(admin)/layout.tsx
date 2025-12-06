@@ -26,12 +26,14 @@ const AdminDashboardLayout = async ({ children }: { children: React.ReactNode })
               {/* <ProfileAvatar /> */}
               <ProfileMenu
                 name={user?.name}
-                email={user.email}
+                email={user?.email}
                 image={user?.image as string}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 role={(user as any)?.role}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 accountType={(user as any)?.accountType}
+                isCandiateProfileCreated={user?.candidate ? true : false}
+                isEmployeeProfileCreated={user?.employee ? true : false}
               />
             </div>
           </div>
