@@ -21,7 +21,7 @@ const SearchInput = ({ route, placeholder = "Name or title...", query = "search"
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      const params = searchParams.toString(); // stable snapshot
+      const params = searchParams.toString();
 
       if (searchQuery) {
         router.push(

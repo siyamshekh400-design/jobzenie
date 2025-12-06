@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,9 +9,45 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { jobTypes } from "@/constants/data";
+import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
+import { getCountries } from "@/lib/utils";
+
+import FilterInput from "../ui/filter-input";
+import SearchInput from "../ui/search-input";
 
 export default function JobFilters() {
-  const jobTypes = ["Full-time", "Part-time", "Contract", "Freelance"];
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const jobType = searchParams.get("jobType") || "";
+  const router = useRouter();
+  const contries = getCountries();
+  const handleReset = () => {
+    const newUrl = removeKeysFromUrlQuery({
+      params: searchParams.toString(),
+      keysToRemove: ["search", "country", "skill", "experience", "location", "jobType"],
+    });
+
+    router.push(newUrl, { scroll: false });
+  };
+  const handleUpdateParams = (value: string, updatedvalue: string, path: string) => {
+    if (value === updatedvalue) {
+      const newUrl = removeKeysFromUrlQuery({
+        params: searchParams.toString(),
+        keysToRemove: [path],
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: String(path),
+        value,
+      });
+
+      router.push(newUrl, { scroll: false });
+    }
+  };
 
   const salaryRanges = [
     { label: "$0 - $50k", value: "0-50" },
@@ -24,11 +61,7 @@ export default function JobFilters() {
       <Card className="p-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Filters</h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            // onClick={handleReset}
-          >
+          <Button variant="ghost" size="sm" onClick={handleReset}>
             <X size={16} className="mr-1" />
             Reset
           </Button>
@@ -38,30 +71,14 @@ export default function JobFilters() {
           {/* Search */}
           <div>
             <Label className="mb-2 block">Search</Label>
-            <Input placeholder="Job title..." />
+            <SearchInput query="search" placeholder="Enter job title or company..." route={pathname} />
           </div>
 
           {/* Location */}
           <div>
             <Label className="mb-3 block font-semibold">Location</Label>
             <div className="space-y-2">
-              {/* {locations.map((loc) => (
-                <div key={loc} className="flex items-center">
-                  <Checkbox
-                    id={loc}
-                    checked={filters.location === loc}
-                    onCheckedChange={() =>
-                      setFilters({
-                        ...filters,
-                        location: filters.location === loc ? "" : loc,
-                      })
-                    }
-                  />
-                  <Label htmlFor={loc} className="ml-2 cursor-pointer font-normal">
-                    {loc}
-                  </Label>
-                </div>
-              ))} */}
+              <FilterInput filtersOps={contries} filter="location" placeholerText="Select country" />
             </div>
           </div>
 
@@ -69,14 +86,17 @@ export default function JobFilters() {
           <div>
             <Label className="mb-3 block font-semibold">Job Type</Label>
             <div className="space-y-2">
-              {jobTypes.map((type) => (
-                <div key={type} className="flex items-center">
+              {jobTypes.map((level) => (
+                <div key={level.value} className="flex items-center">
                   <Checkbox
-                    id={type}
-                    // onCheckedChange={}
+                    id={level.value}
+                    checked={jobType === level.value}
+                    onCheckedChange={() => {
+                      handleUpdateParams(level.value, jobType, "jobType");
+                    }}
                   />
-                  <Label htmlFor={type} className="ml-2 cursor-pointer font-normal">
-                    {type}
+                  <Label htmlFor={level.label} className="ml-2 cursor-pointer font-normal">
+                    {level.label}
                   </Label>
                 </div>
               ))}
@@ -85,25 +105,8 @@ export default function JobFilters() {
 
           {/* Salary Range */}
           <div>
-            <Label className="mb-3 block font-semibold">Salary Range</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select salary range" />
-              </SelectTrigger>
-              <SelectContent>
-                {salaryRanges.map((range) => (
-                  <SelectItem key={range.value} value={range.value}>
-                    {range.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Company */}
-          <div>
-            <Label className="mb-2 block">Company</Label>
-            <Input placeholder="Filter by company..." />
+            <Label className="mb-2 block">Skills</Label>
+            <SearchInput query="skill" placeholder="Enter skills tag..." route={pathname} />
           </div>
         </div>
       </Card>

@@ -154,7 +154,7 @@ export const getAllJobs = async (
 
     // Full-text search — title, description, skills
     if (search) {
-      filter.$text = { $search: search };
+      filter.$or = [{ title: { $regex: search, $options: "i" } }, { companyName: { $regex: search, $options: "i" } }];
     }
 
     // Filter by location

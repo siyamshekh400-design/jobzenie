@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { experienceOps } from "@/constants/data";
+import { experienceOps, skillLevels } from "@/constants/data";
 import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
 import { getCountries } from "@/lib/utils";
 
@@ -20,8 +20,6 @@ export default function TalentFilters() {
   const searchParams = useSearchParams();
   const slevel = searchParams.get("slevel") || "";
   const contries = getCountries();
-
-  const skillLevels = ["Entry Level", "Junior", "Mid-Level", "Senior", "Expert"];
 
   const handleReset = () => {
     const newUrl = removeKeysFromUrlQuery({
@@ -82,16 +80,16 @@ export default function TalentFilters() {
             <Label className="mb-3 block font-semibold">Skill Level</Label>
             <div className="space-y-2">
               {skillLevels.map((level) => (
-                <div key={level} className="flex items-center">
+                <div key={level.value} className="flex items-center">
                   <Checkbox
-                    id={level}
-                    checked={slevel === level}
+                    id={level.value}
+                    checked={slevel === level.value}
                     onCheckedChange={() => {
-                      handleUpdateParams(level, slevel, "slevel");
+                      handleUpdateParams(level.value, slevel, "slevel");
                     }}
                   />
-                  <Label htmlFor={level} className="ml-2 cursor-pointer font-normal">
-                    {level}
+                  <Label htmlFor={level.label} className="ml-2 cursor-pointer font-normal">
+                    {level.label}
                   </Label>
                 </div>
               ))}

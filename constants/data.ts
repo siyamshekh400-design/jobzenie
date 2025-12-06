@@ -345,6 +345,7 @@ export const savedJobs = Array.from({ length: 50 }, (_, i) => {
     "Los Angeles, CA",
   ];
   const salaries = ["$80k - $100k", "$90k - $120k", "$100k - $130k", "$105k - $135k", "$120k - $150k", "$130k - $160k"];
+
   const savedDates = [
     "1 day ago",
     "2 days ago",
