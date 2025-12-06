@@ -12,8 +12,16 @@ import {
   ColumnFiltersState,
   VisibilityState,
 } from "@tanstack/react-table";
+import { ChevronDown } from "lucide-react";
 import React from "react";
 
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -61,12 +69,40 @@ export function AppliedJobTable<TData, TValue>({ columns, data }: DataTableProps
     <div className="mt-6 rounded-md border">
       {/* Search and Page Size */}
       <div className="space-y-4 p-4">
-        <Input
-          placeholder="Search applied jobs..."
-          value={table.getState().globalFilter || ""}
-          onChange={(e) => table.setGlobalFilter(e.target.value)}
-          className="max-w-sm"
-        />
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <Input
+            placeholder="Search applied jobs..."
+            value={table.getState().globalFilter || ""}
+            onChange={(e) => table.setGlobalFilter(e.target.value)}
+            className="max-w-sm"
+          />
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto">
+                  Columns <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
 
         {/* Table */}
         <Table>
