@@ -6,9 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { jobTypes } from "@/constants/data";
 import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
 import { getCountries } from "@/lib/utils";
@@ -49,12 +47,12 @@ export default function JobFilters() {
     }
   };
 
-  const salaryRanges = [
-    { label: "$0 - $50k", value: "0-50" },
-    { label: "$50k - $100k", value: "50-100" },
-    { label: "$100k - $150k", value: "100-150" },
-    { label: "$150k+", value: "150+" },
-  ];
+  // const salaryRanges = [
+  //   { label: "$0 - $50k", value: "0-50" },
+  //   { label: "$50k - $100k", value: "50-100" },
+  //   { label: "$100k - $150k", value: "100-150" },
+  //   { label: "$150k+", value: "150+" },
+  // ];
 
   return (
     <div className="sticky top-20 space-y-6">
